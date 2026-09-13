@@ -1,0 +1,125 @@
+Script started on 2026-09-13 17:30:59+00:00 [TERM="xterm-256color" TTY="/dev/pts/5" COLUMNS="76" LINES="43"]
+[?2004h]0;rasi@LAPTOP-GLKGAP72: ~/xv6-riscv[01;32mrasi@LAPTOP-GLKGAP72[00m:[01;34m~/xv6-riscv[00m$ exitmake qemu
+[?2004lqemu-system-riscv64 -machine virt -bios none -kernel kernel/kernel -m 128M -smp 3 -nographic -global virtio-mmio.force-legacy=false -drive file=fs.img,if=none,format=raw,id=x0 -device virtio-blk-device,drive=x0,bus=virtio-mmio-bus.0
+
+xv6 kernel is booting
+
+hart 2 starting
+hart 1 starting
+init: starting sh
+$ n ab  bankers
+Initial Safety Check
+System is in a SAFE state.
+Initial Safe Sequence: P1 P3 P4 P0 P2 
+
+Process P1 requesting [1, 0, 2]
+Request granted to P1 successfully!
+Safe Sequence: P1 P3 P4 P0 P2 
+
+Process P4 requesting [3, 3, 0]
+Process P4 must wait. Resources not available.
+$ deadlockdetect
+ Testing Scenario: No Deadlock (Acyclic)
+Constructed Wait-For Graph Edges:
+  P0 -> P1
+  P1 -> P2
+STATUS: NO DEADLOCK DETECTED.
+ Testing Scenario: Deadlock (3-Process Circular Wait)
+Constructed Wait-For Graph Edges:
+  P0 -> P1
+  P1 -> P2
+  P2 -> P0
+STATUS: DEADLOCK DETECTED!
+Deadlock Cycle: P0 -> P1 -> P2 -> P0
+$ resourceorder
+Running Unordered Lock Acquisition (Deadlock Risk)
+[Pro[cProceess A] Attess mBp]t inAgt tLeomcpk1...
+[Process A] Acqtuinigr eLocd Lko2c..k1.
+.
+[Process B] Acquired Lock2.
+[Process A] Attempting[ PLrooccke2s.s. B] Attem.
+[Ppting Lock1r.o..cess A] Acquire
+d[ PLocrkoce2s.s
+ B] Acquired Lock1.
+$ resourceorder fix
+
+Running Hierarchical Lock Acquisition (Fixed)
+[Pr[ocess BP]r ocessAt teAm]p tiAntg Lotemckp1ting .L..
+o[cPkro1...
+[Procceessss  AB] Acquired]  AcquLired Loock1.c
+k1.
+[Pro[Pcrocess ess AB]]  AAttetmtemppttining Lgoc Lock2k2.....
+.[
+P[rProocessc eB]s Asc qAu] iArceqdu iLroecd k2L.oc
+k[2.P
+r[oPcress oBc] Woresks  cAo]m pWloertk completeedd  ssuucccceessfullys.s
+fully.
+$ syncdeadlock
+ Multi-Resource Execution 
+[P0] [[P[PC4[ycle 1: 3]RPeq1ue]sting Resource ] C 0 C.yC.ycP.
+le[c P10l]e2 C: y1c:yl ] ceR eRle1qe: GRqAuNTeEs D t iResource 0.
+[P0] Cycle 1: Requensg tR1Cieyuc:le n1g  RRes:ou rsourcRee 1...
+[P0] ecqeCqy cl1eues eu1et:. iG.R.As
+N[TstEPD 1n]R eCiytcsloe 1: GRANTED Resiungg rRceeng  1o.u
+rc -RRe-s>o e[ uP1r.0
+] W[cP1eO R]soKuI0N r.GCe yccew li..tehs
+o u rRcee1 s0o:u [Rrec0qeus 0 and e1s.ti.n.g. P.
+Reso.
+urce 2.[.P..
+2][ [PP01]C C]y cylcle 1: GRANTED eRe 1: ReleasinCsourceg  0Rye3s]o.ucr clees 0 and 1.
+[P0] C y
+c.l1e: GRANTE[P2D  2]:R  CReesqouCeuysrtccei n2yg. R
+.-
+e[s-our>ce  0[...
+[P0] Cycle 2: GRANTED ResourPcPe1 0.]
+ [WcPOl0e]R4] C CycKlIel N2G :  R1: Reqeweiqtuhue Rsetsing Resource 1...
+[P0ou]r cCeyec lse  1y cal2n:s1 dG R2A.e.N.T
+ting Resource 2...
+[P2] C[PE1Dy ]clR  eCycle 1: Releasing Resources 1 and 2.
+[sP1o1u]rc eC :1. GRANTED Resourc
+y-c-l:>e   [e 1: GRANTED Resource 2.
+--> [P20:] P2 R]e eWqOuestGRRiKnIg N0G.WA with  ORResoeusroces 0 and 1..ur.ce 1...
+[P1] Cycle 2: GRANTED Resou
+rRcKIeN G 
+N1TED .w
+[i[t[P3] CycPlR0e]sP1 ] CCyhc lee  yR2c:l Reesele aos2o:u1: Requesting Resoiunrg  RReeqsources 0 and 1.
+uesting Resource 2...
+[P1ucr]c eCysc l0ere   a2n:d  c2G1.R.A.NTED Resource 2.
+-.-
+>.e [P.1
+][ PW 0O3R]KI[N GP 2w.i]t
+[P4] Ch  CRyecCsloey u1rc:es 1 and 2...
+[P1]  ReCyclecleasing  Resources 0 and 22: Releasing Resourc.lee 1: Res
+qu ycle1e [1 Pand 2.
+2] Cycle 2: Requesting Resource: GRAN T0s..E.D
+ [tPRiensgou2rc] eC y1c.l
+e- -> [P3] WORKING wi2: Resource 2...
+[P4] Cycle t h1G:R ResourceAsN T0ED Resource 0.
+[P2] Cycle   2a:n Rde q1ueG.s.t.Ri
+ng ReAsNoTurEcD Res[oue P23] .C.rc.ycle
+ 1[:P eR2] Cycle 2: GRANTED Resource 2.
+--> [P2] eWlORe Ka2sIinNgG  .wRiets
+h- -o>urResources 0 and 2...
+[P2] cCycle  [2:e sRePleasing Resources 0 an 0d  a2.
+nd 1.4
+] WORKING wit[hP 3R]e Cycle 2: Resqources 0 andu e2s.ting..
+[ PR4es]o Cycle 1: Releasing Resources 0u rce 0...
+[P3] Cyaclnde  22.:
+ GRANTED[ ResourcPe4 0]. Cyc
+l[eP 32]: Cycl Requesting Rees ou2r:c eR e0q.uesting Resourc.e. 
+1[P.4.]. 
+C[ycle 2: GRANTEPD3 ]R eCsyource 0.
+[P4cle 2: GRANTE]D  CRyecle 2s:o uRrecqeuest 1.
+--> i[nPg Resou3r]c WORKING with Resources 0 and 1...
+[Pe 2...
+[P4] Cycle 2: GRANTED Reso3urce 2.
+--> []P Cycle 2:4 ]R elWOeRasing ReKsIoNGurces 0 and 1.
+ with Resources 0 and 2...
+[P4] Cycle 2: Releasing Resources 0 and 2.
+
+All processes completed successfully without deadlock!
+$ QEMU: Terminated
+[?2004h]0;rasi@LAPTOP-GLKGAP72: ~/xv6-riscv[01;32mrasi@LAPTOP-GLKGAP72[00m:[01;34m~/xv6-riscv[00m$ exit
+[?2004lexit
+
+Script done on 2026-09-13 17:31:58+00:00 [COMMAND_EXIT_CODE="0"]
