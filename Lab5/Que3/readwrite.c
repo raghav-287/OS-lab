@@ -53,7 +53,7 @@ int main(void) {
         printf("Writer finished.\n");
     } else {
         // Reader Process
-        pause(1); // Reduced pause so reader starts concurrently
+        pause(1);
 
         for (int i = 0; i < 5; i++) {
             while (rw->writing == 1) {

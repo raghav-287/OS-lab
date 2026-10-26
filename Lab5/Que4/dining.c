@@ -46,7 +46,7 @@ void test_philosopher(int id, struct shared_state *state) {
         printf("Philosopher %d is EATING\n", id);
         delay(400000);
 
-        // Release chopsticks
+
         __sync_lock_release(&state->chopsticks[left]);
         __sync_lock_release(&state->chopsticks[right]);
     }

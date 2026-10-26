@@ -38,11 +38,10 @@ int main(void) {
         sb->turn = 0;
 
         for (int i = 1; i <= TOTAL_ITEMS; i++) {
-            // Wait while buffer is full
             while (sb->count == BUFFER_SIZE) {
                 pause(1);
             }
-
+            //buffer is full
             sb->buffer[sb->in] = i;
             printf("Producer produced: %d\n", i);
             sb->in = (sb->in + 1) % BUFFER_SIZE;
@@ -78,7 +77,7 @@ int main(void) {
         printf("Consumer finished.\n");
     }
 
-    // Cleanly unmap shared memory to avoid kernel panics
+
     shm_unmap();
     exit(0);
 }
